@@ -1,5 +1,6 @@
 import errors from './rerrors';
-import login from './rlogin';
+import loginRouter from './rlogin';
+import projectRouter from './rproject';
 
 
 export default [
@@ -7,6 +8,7 @@ export default [
     path: '/',
     redirect: '/',
   },
-  login,
+  loginRouter,
+  projectRouter,
   ...errors,
 ];
