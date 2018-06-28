@@ -1,0 +1,167 @@
+// 实例运行状态颜色
+$jobInit:#2FC7CA;
+$jobWait:#eab537;
+$jobReady:#7266ba;
+$jobQueue:#ff7e00;
+$jobExec:#25beb1;
+$jobSuccess:#27c24c;
+$jobFailed:#f05050;
+$jobKilled:#ead737;
+$jobTotal:#23b7e5;
+
+// 全局颜色
+$bgColor:#ffffff;
+$pr:#20a0ff;
+$se:#111f2a;
+$success:#60cb70;
+$orange: #ff7e00;
+$blue:#3aaafc;
+$lightBule:#3ac;
+$red: #fe5140;
+$fontColor: #656565;
+$btnRed: #ea3d3d;
+$deleteRed:#FE5140 ;
+$textColor:#E6F2FA ;
+$borderColor: #dcdcdc;
+$border: #dcdcdc;
+$white:#ffffff;
+$black:#1f2d3d;
+
+// 默认样式
+$borderRadius: 4px;
+$lineHeight:36px;
+$lineHeightSmall:1;
+
+// 字体大小
+$h1Font:18px;
+$h2Font:16px;
+$h3Font:14px;
+$textFont:12px;
+
+@mixin sfBtn($color,$borderColor,$backgroundColor) {
+    padding: 7.5px 20px;
+    margin: 0 5px;
+    color:$color;
+    font-size: 14px;
+    border: 1px solid $borderColor;
+    background-color: $backgroundColor;
+    border-radius: $borderRadius;
+    outline: none;
+    cursor: pointer;
+    &.first {
+        margin-left: 0px;
+    }
+}
+@mixin sfSmallBtn($color,$borderColor,$backgroundColor) {
+  padding: 7.5px 12px;
+  margin: 0 5px;
+  color:$color;
+  font-size: 14px;
+  border: 1px solid $borderColor;
+  background-color: $backgroundColor;
+  border-radius: $borderRadius;
+  outline: none;
+  cursor: pointer;
+  &.first {
+      margin-left: 0px;
+  }
+}
+@mixin sfHover($color) {
+    &:hover {
+        border-color: $color;
+        background-color:$color;
+    }
+}
+@mixin sfAllHover($color,$borderColor,$backgroundColor) {
+  &:hover {
+      border-color: $borderColor;
+      background-color:$backgroundColor;
+      color:$color
+  }
+}
+@mixin sfClear(){
+  &::after{
+    content: '';
+    display: block;
+    visibility: hidden;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+  }
+}
+
+// 帧动画
+@mixin keyframes($animationName) {
+  @-webkit-keyframes #{$animationName} {
+      @content;
+  }
+  @-moz-keyframes #{$animationName} {
+     @content;
+  }
+  @-o-keyframes #{$animationName} {
+     @content;
+  }
+  @keyframes #{$animationName} {
+     @content;
+  }
+}
+
+
+// form表单样式
+@mixin formItem($num){
+  width: ((20*$num)/100)*100%;
+  min-width:200px;
+  padding:10px;
+  font-size: $textFont;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  .label{
+    line-height: $lineHeight;
+    height: inherit;
+    text-align: center;
+
+  }
+  .input{
+    flex: 1;
+    height: $lineHeight;
+    >* {
+      width: 100%;
+    }
+    &.input-error{
+      input{
+        border-color: $red;
+        &:hover{
+          border-color: $red;
+        }
+        &:focus{
+          border-color: $red;
+        }
+      }
+    }
+  }
+}
+
+  .form-item-1{
+    @include formItem(1);
+  }
+  .form-item-2{
+    @include formItem(2);
+  }
+  .form-item-3{
+    @include formItem(3);
+  }
+  .form-item-4{
+    @include formItem(4);
+  }
+  .form-item-5{
+    @include formItem(5);
+  }
+
+  @mixin elBtn(){
+    padding: 0 20px;
+    line-height: $lineHeight;
+    margin: 0 5px;
+    font-size: $textFont;
+  }

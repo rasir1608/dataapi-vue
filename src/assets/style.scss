@@ -1,0 +1,219 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body,
+#app{
+    height: 100%;
+    width: 100%;
+    font-family: "Microsoft Yahei", 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-width: 1350px;
+    color: $fontColor;
+    line-height: $lineHeight;
+}
+
+input,
+textarea,
+keygen,
+select,
+button {
+    font-family: "Microsoft Yahei", 'Avenir', Helvetica, Arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
+    line-height: $lineHeight;
+}
+
+
+input,
+textarea,
+keygen,
+select,
+button {
+    font-family: "Microsoft YaHei";
+    outline: 0;
+    font-size: $textFont;
+    border-radius: $borderRadius;
+    line-height: $lineHeight;
+}
+
+ul,
+li,
+ol {
+    list-style: none;
+}
+
+img {
+    display: block;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+.th1 {
+    font-size: $h1Font;
+}
+
+.th2 {
+    font-size:  $h2Font;
+}
+
+.th3 {
+    font-size:  $h3Font;
+}
+
+.ttext {
+    font-size:  $textFont;
+}
+
+.need::before, .form-need label::before {
+    content: '*';
+    line-height:$lineHeight;
+    font-size: 14px;
+    color: red;
+    margin-right: 5px;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+.clear::after{
+    content: '';
+    display: block;
+    visibility: hidden;
+    height: 0;
+    clear: both;
+    overflow: hidden;
+}
+// 面包屑
+.bread-crumb{
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+// 滚动条样式
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:vertical {
+    height: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    width: 5px;
+    background-color: rgba(255, 255, 255, 0.5);
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+.el-table {
+    border-radius: 4px 4px 0 0;
+    .el-table__header-wrapper thead tr th{
+        background-color: #f5f5f5;
+    }
+    th>div {
+        padding: 0;
+    }
+}
+
+.ofh {
+    overflow: hidden;
+}
+
+.hide {
+    display: none;
+}
+
+.relative {
+    position: relative;
+}
+
+.absolute {
+    position: absolute;
+}
+
+.m_auto {
+    margin: auto;
+}
+
+.width_100 {
+    width: 100% !important;
+}
+
+.height_100 {
+    height: 100%;
+}
+
+.nowrap {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.d_box {
+    display: flex;
+    box-sizing: border-box;
+    flex: 1;
+    width: 100%;
+}
+
+.d_boxflex {
+    flex: 1;
+    display: block;
+}
+
+.cursor-po {
+    cursor: pointer;
+}
+
+.text-c {
+    text-align: center;
+}
+
+.text-l {
+    text-align: left !important;
+}
+
+.text-r {
+    text-align: right !important;
+}
+
+.text-over {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-all;
+    overflow: hidden;
+}
