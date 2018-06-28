@@ -9,7 +9,6 @@ import App from './App';
 import router from './router';
 import store from './store';
 import axios from './http';
-import utils from './utils';
 
 Vue.config.errorHandler = function (err, vm) {
     // handle error
