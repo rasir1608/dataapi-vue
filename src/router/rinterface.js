@@ -1,6 +1,6 @@
 export default {
-  path: '/interface',
-  name: 'interface',
+  path: 'interface',
+  name: 'Interface',
   component: () => import('@/views/interface/layout/main'),
   children: [
     {

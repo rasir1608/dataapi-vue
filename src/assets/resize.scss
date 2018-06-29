@@ -1,0 +1,6 @@
+.el-button{
+  @include elBtn();
+}
+.el-input__inner{
+  border-color: $border;
+}

@@ -3,6 +3,7 @@
 import Vue from 'vue';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/style.scss';
+import '@/assets/resize.scss';
 import ElementUI from 'element-ui';
 import moment from 'moment';
 import App from './App';

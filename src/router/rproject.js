@@ -1,3 +1,5 @@
+import interfaceRouter from './rinterface';
+
 export default {
   path: '/project',
   redirect: '/project/market',
@@ -24,5 +26,6 @@ export default {
       name: 'ProjectDetail',
       component: () => import('@/views/project/layout/detail'),
     },
+    interfaceRouter,
   ],
 };

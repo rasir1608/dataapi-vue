@@ -13,7 +13,6 @@ body,
     font-family: "Microsoft Yahei", 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    min-width: 1350px;
     color: $fontColor;
     line-height: $lineHeight;
 }
@@ -62,19 +61,20 @@ img {
 
 a {
     text-decoration: none;
+    color: inherit;
 }
 
 
 .th1 {
-    font-size: $h1Font;
+    font-size: $bigFont;
 }
 
 .th2 {
-    font-size:  $h2Font;
+    font-size:  $titleFont;
 }
 
 .th3 {
-    font-size:  $h3Font;
+    font-size:  $normalFont;
 }
 
 .ttext {
@@ -216,4 +216,20 @@ a {
     white-space: nowrap;
     word-break: break-all;
     overflow: hidden;
+}
+
+.form-item-1{
+  @include formItem(1);
+}
+.form-item-2{
+  @include formItem(2);
+}
+.form-item-3{
+  @include formItem(3);
+}
+.form-item-4{
+  @include formItem(4);
+}
+.form-item-5{
+  @include formItem(5);
 }

@@ -1,4 +1,3 @@
 <template lang="pug">
-  .project
-    router-view
+  .mine-main
 </template>
