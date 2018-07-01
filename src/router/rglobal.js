@@ -8,7 +8,7 @@ console.log(projectRouter);
 export default [
   {
     path: '/',
-    redirect: '/',
+    redirect: '/mine',
   },
   loginRouter,
   projectRouter,

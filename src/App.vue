@@ -25,11 +25,13 @@ export default {
         flex: 1;
         flex-direction: column;
         font-size: $textFont;
+        min-width: 1200px;
         >main{
           display: flex;
           flex: 1;
           background: $bgColor;
           padding: $borderPadding;
+          overflow: auto;
         }
     }
 </style>

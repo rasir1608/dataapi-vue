@@ -19,7 +19,6 @@ export default {
 <style lang="scss">
   .mine{
     flex: 1;
-    overflow: auto;
   }
 </style>
 

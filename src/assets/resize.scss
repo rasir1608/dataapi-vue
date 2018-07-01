@@ -4,3 +4,28 @@
 .el-input__inner{
   border-color: $border;
 }
+.dataapi-table.el-table{
+  .el-table__header-wrapper thead tr th{
+    background: $white;
+  }
+  th.is-leaf{
+    border-width: 2px;
+    border-color: #bbbbbb;
+  }
+  td,th{
+    padding: 0;
+    line-height: 30px;
+    font-size: $textFont;
+  }
+  td{
+    border-bottom: 1px dashed #bbbbbb;
+  }
+}
+.el-input__inner{
+  line-height: $lineHeight;
+  height: $lineHeight;
+  font-size: $textFont;
+}
+.el-input__icon{
+  line-height: $lineHeight;
+}
