@@ -31,60 +31,63 @@
 </template>
 <script>
 import ListItem from '@/views/components/list-item';
-export default {
-  components:{
-    ListItem
-  },
-  data(){
-    return {
-      searchProject:{
-        size:5,
-        currentPage:1,
-        projectId:'',
-        projectName:'',
-        creator:'',
-      },
-      newProject:{
-        name:'',
-      },
-       projectData:{
-        list:[
-          {
-              projectName:'项目1',
-              remarks:' 此处为项目描述：项目描述',
-              creator:'rasir',
-              createTime:'2018-06-30',
-          },
-          {
-              projectName:'项目1',
-              remarks:' 此处为项目描述：项目描述',
-              creator:'rasir',
-              createTime:'2018-06-30',
-          },
-          {
-              projectName:'项目1',
-              remarks:' 此处为项目描述：项目描述',
-              creator:'rasir',
-              createTime:'2018-06-30',
-          },{
-              projectName:'项目1',
-              remarks:' 此处为项目描述：项目描述',
-              creator:'rasir',
-              createTime:'2018-06-30',
-          }
-          ,{
-              projectName:'项目1',
-              remarks:' 此处为项目描述：项目描述',
-              creator:'rasir',
-              createTime:'2018-06-30',
-          }
 
+export default {
+  components: {
+    ListItem,
+  },
+  data() {
+    return {
+      searchProject: {
+        size: 5,
+        currentPage: 1,
+        projectId: '',
+        projectName: '',
+        creator: '',
+      },
+      newProject: {
+        name: '',
+      },
+       projectData: {
+        list: [
+          {
+              projectName: '项目1',
+              remarks: ' 此处为项目描述：项目描述',
+              creator: 'rasir',
+              createTime: '2018-06-30',
+          },
+           {
+              projectName: '项目1',
+              remarks: ' 此处为项目描述：项目描述',
+              creator: 'rasir',
+              createTime: '2018-06-30',
+          },
+          {
+              projectName: '项目1',
+              remarks: ' 此处为项目描述：项目描述',
+              creator: 'rasir',
+              createTime: '2018-06-30',
+          },
+          {
+              projectName: '项目1',
+              remarks: ' 此处为项目描述：项目描述',
+              creator: 'rasir',
+              createTime: '2018-06-30',
+          }, {
+              projectName: '项目1',
+              remarks: ' 此处为项目描述：项目描述',
+              creator: 'rasir',
+              createTime: '2018-06-30',
+          },
         ],
-        total:20
-      }
-    }
-  }
-}
+        total: 20,
+      },
+    };
+  },
+  created() {
+    this.searchProject.size = Math.floor(window.innerWidth / 220);
+  },
+};
 </script>
 
 <style lang="scss">

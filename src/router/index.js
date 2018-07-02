@@ -14,7 +14,7 @@ vueRouter.beforeEach((to, from, next) => {
 });
 vueRouter.afterEach((to) => {
     const meta = to.meta;
-    document.title = '数据集成';
+    document.title = '数据市场';
     if (meta && meta.title) {
       document.title += `—${to.meta.title}`;
     } 

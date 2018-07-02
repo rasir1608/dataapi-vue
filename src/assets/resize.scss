@@ -29,3 +29,22 @@
 .el-input__icon{
   line-height: $lineHeight;
 }
+.interface-table.el-table{
+  border: 1px solid $border;
+  border-radius: $borderRadius;
+  .el-table__header-wrapper thead tr th{
+    background: #C6C0C0;
+  }
+  td,th{
+    padding: 0;
+    line-height: 36px;
+    font-size: $textFont;
+    color: $black;
+  }
+  .cell{
+    line-height: 36px;
+  }
+  &.el-table--striped .el-table__body tr.el-table__row--striped td{
+    background: #ECECEC;
+  }
+}

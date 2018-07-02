@@ -19,35 +19,36 @@
 </template>
 <script>
 export default {
-    props:{
-        item:{
-            type:Object,
-            default(){
+    props: {
+        item: {
+            type: Object,
+            default() {
                 return {
-                    projectName:'项目1',
-                    remarks:' 此处为项目描述：项目描述',
-                    creator:'rasir',
-                    createTime:'2018-06-30',
-                }
-            }
-        }
+                    projectName: '项目1',
+                    remarks: ' 此处为项目描述：项目描述',
+                    creator: 'rasir',
+                    createTime: '2018-06-30',
+                };
+            },
+        },
     },
-    data(){
+    data() {
         return {
             
-        }
-    }
-}
+        };
+    },
+};
 </script>
 
 <style lang="scss">
     .list-item-wrap{
-        width: 19.5%;
+        width:200px;
         height: 300px;
         border-radius: $borderRadius;
         background: $border;
         padding: 5px;
         position: relative;
+        margin: 10px;
          &:hover{
             .list-item-cover{
                 display: flex;

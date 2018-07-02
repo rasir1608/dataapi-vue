@@ -33,58 +33,58 @@
 </template>
 <script>
 export default {
-  data(){
+  data() {
     return {
-      PowerData:{
-        list:[
+      PowerData: {
+        list: [
           {
-            projectName:'项目1',
-            projectId:10001,
-            userName:'rasir',
-            remarks:'这是第N个测试...',
-            createTime:'2018-06-04'
+            projectName: '项目1',
+            projectId: 10001,
+            userName: 'rasir',
+            remarks: '这是第N个测试...',
+            createTime: '2018-06-04',
           },
            {
-            projectName:'项目1',
-            projectId:10001,
-            userName:'rasir',
-            remarks:'这是第N个测试...',
-            createTime:'2018-06-04'
+            projectName: '项目1',
+            projectId: 10001,
+            userName: 'rasir',
+            remarks: '这是第N个测试...',
+            createTime: '2018-06-04',
           },
            {
-            projectName:'项目1',
-            projectId:10001,
-            userName:'rasir',
-            remarks:'这是第N个测试...',
-            createTime:'2018-06-04'
+            projectName: '项目1',
+            projectId: 10001,
+            userName: 'rasir',
+            remarks: '这是第N个测试...',
+            createTime: '2018-06-04',
           },
            {
-            projectName:'项目1',
-            projectId:10001,
-            userName:'rasir',
-            remarks:'这是第N个测试...',
-            createTime:'2018-06-04'
+            projectName: '项目1',
+            projectId: 10001,
+            userName: 'rasir',
+            remarks: '这是第N个测试...',
+            createTime: '2018-06-04',
           },
            {
-            projectName:'项目1',
-            projectId:10001,
-            userName:'rasir',
-            remarks:'这是第N个测试...',
-            createTime:'2018-06-04'
+            projectName: '项目1',
+            projectId: 10001,
+            userName: 'rasir',
+            remarks: '这是第N个测试...',
+            createTime: '2018-06-04',
           },
            {
-            projectName:'项目1',
-            projectId:10001,
-            userName:'rasir',
-            remarks:'这是第N个测试...',
-            createTime:'2018-06-04'
-          }
+            projectName: '项目1',
+            projectId: 10001,
+            userName: 'rasir',
+            remarks: '这是第N个测试...',
+            createTime: '2018-06-04',
+          },
         ],
-        total:20,
-      }
-    }
-  }
-}
+        total: 20,
+      },
+    };
+  },
+};
 </script>
 
 <style lang="scss">
@@ -159,7 +159,6 @@ export default {
         flex: 1;
         border: 1px solid $border;
         border-radius: $borderRadius;
-        padding: 5px;
         .el-button{
           padding: 0;
           margin: 0;
