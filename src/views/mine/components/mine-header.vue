@@ -19,7 +19,7 @@
         el-button(type='primary') 我申请的
         el-button 申请我的
       .process-list
-        el-table.dataapi-table(height='180',:data='PowerData.list', style="width: 100%")
+        el-table.process-table(height='180',:data='PowerData.list', style="width: 100%")
           el-table-column(type='index',label='序号',width='50')
           el-table-column(prop='projectName',label='项目名称',min-width='70',show-overflow-tooltip)
           el-table-column(prop='projectId',label='项目编号',min-width='70',show-overflow-tooltip)
@@ -165,6 +165,7 @@ export default {
           line-height: 30px;
           i{
             padding: 2px;
+            font-size: $titleFont;
             transition: all 0.2s ease;
             &:before{
               font-weight: 600;

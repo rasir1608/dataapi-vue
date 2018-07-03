@@ -18,7 +18,7 @@ export default {
 <style lang="scss">
 .project-detail{
   width: 100%;
-  .project-detail-main{
+  .project-main{
     margin:20px 0; 
   }
 }

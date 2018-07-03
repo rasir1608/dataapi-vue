@@ -16,10 +16,10 @@
             .label 创建人：
             .input rasir
         .project-models
-          a 原型
+          a(@click='modelsShow=true') 原型
           a UI
           a web
-          a 项目协作人
+          a(@click='membersShow=true') 项目协作人
       .project-remark
         .form-item-5
           .label 备注：
@@ -45,13 +45,32 @@
         .project-interface-form-submits
           el-button 重置
           el-button(type='primary') 查询
+    models-dialog(:show.sync='modelsShow',:model='model')
+    project-members-dialog(:show.sync='membersShow')
 </template>
 <script>
+import ModelsDialog from './models-dialog';
+import ProjectMembersDialog from './project-members-dialog';
+
 export default {
+  components: {
+    ModelsDialog,
+    ProjectMembersDialog,
+  },
   data() {
     return {
       remarks: '',
+      modelsShow: false,
+      membersShow: false,
+      model: {
+        title: '项目原型',
+        url: '/rasir/header_201806040001',
+        path: 'https://jsonplaceholder.typicode.com/posts/',
+      },
     };
+  },
+  methods: {
+    
   },
 };
 </script>
@@ -131,6 +150,7 @@ export default {
       }
     }
   }
+  
 }
 </style>
 
