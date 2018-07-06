@@ -1,0 +1,56 @@
+{
+  "window.zoomLevel": 1,
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "emmet.syntaxProfiles": {
+    "vue-html": "html",
+    "vue": "html"
+  },
+  "emmet.includeLanguages": {
+    "vue-html": "html",
+    // "vue": "html",
+    "javascript": "javascriptreact"
+  },
+  "element-helper.version": "2.3",
+  // 一个制表符等于的空格数。该设置在 `editor.detectIndentation` 启用时根据文件内容进行重写。
+  "editor.detectIndentation": false,
+  "files.autoSave": "off",
+  "files.autoSaveDelay": 500,
+  "javascript.validate.enable": false,
+  "files.eol": "\n",
+  "beautify.language": {
+    "js": {
+      "type": [
+        "javascript",
+        "json"
+      ],
+      "filename": [
+        ".jsbeautifyrc"
+      ]
+    },
+    "css": [
+      "css",
+      "scss"
+    ],
+    "html": [
+      "htm",
+      "html",
+    ]
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    {
+      "language": "vue",
+      "autoFix": true
+    },
+    "html",
+    "vue"
+  ],
+  "editor.tabSize": 2,
+  "eslint.autoFixOnSave": true,
+  "explorer.confirmDelete": false,
+  "px2rem.rootFontSize": 75,
+  "vsicons.projectDetection.autoReload": true
+}
