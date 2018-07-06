@@ -12,7 +12,7 @@
           el-input(ref="projectNameSearchInputWrap",placeholder='搜索项目名称',v-model='searchProject.name', suffix-icon="el-icon-search",@blur='searchProject.name = trimStr(searchProject.name)')
           el-button(type='primary',@click='resetPageAndSearch') 搜索
       .mine-projects-table(v-if='myProjects.list.length')
-        list-item(v-for='(item,index) in myProjects.list',:key='index',:item='item',@edite='editeProject(item)',@delete='deleteProject(item)')
+        list-item(v-for='(item,index) in myProjects.list',:key='index',:item='item',@delete='deleteProject(item)')
       .mine-projects-empty(v-else) 暂无数据
     .mine-projects-pagination(v-if='myProjects.total') 
       el-pagination(layout="total, prev, pager, next, jumper",:page-size="searchProject.size",:current-page.sync ="searchProject.currentPage",:total="myProjects.total")
@@ -74,15 +74,15 @@ export default {
         this.$store.dispatch('saveProject', newProject);
       }
     },
-    searchProjectList() {
+    async searchProjectList() {
       const data = {};
       Object.keys(this.searchProject).forEach((key) => {
         if (this.searchProject[key] || this.searchProject[key] === 0) data[key] = this.searchProject[key];
       });
-      this.$store.dispatch('searchMyProject', data);
+      await this.$store.dispatch('searchMyProject', data);
     },
-    resetPageAndSearch() {
-      if (this.searchProject.currentPage === 1) this.searchProjectList();
+    async resetPageAndSearch() {
+      if (this.searchProject.currentPage === 1) await this.searchProjectList();
       else this.searchProject.currentPage = 1;
     },
     bindKeyEnter(wrapEle) {
@@ -92,10 +92,6 @@ export default {
           this.resetPageAndSearch();
         }
       });
-    },
-    editeProject(item) {
-      console.log(91, item);
-      this.$router.push(`/project/edite/${item.projectId}`);
     },
     deleteProject(item) {
       if (item.power !== 5) {
@@ -108,7 +104,7 @@ export default {
         async callback(action) {
           if (action === 'confirm') {
             await vm.$store.dispatch('deleteProject', item.projectId);
-            vm.searchProjectList();
+            await vm.searchProjectList();
           }
         },
       });

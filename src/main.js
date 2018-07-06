@@ -26,6 +26,11 @@ Vue.filter('formatDate', (time, format) => {
   format = format || 'YYYY-MM-DD hh:mm:ss';
   return moment(time).format(format);
 });
+Vue.filter('powerMap', (power) => {
+  if (!/^[0-5]$/.test(power)) return '';
+  return ['驳回', '申请中', '已通过', '', '', '管理员'][Number(power)];
+});
+
 Vue.prototype.trimStr = string => string.trim();
 /* eslint-disable no-new */
 new Vue({

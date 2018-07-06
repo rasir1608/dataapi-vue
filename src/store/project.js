@@ -8,7 +8,10 @@ const state = {
     total: 0,
   },
   currentProject: {},
-  
+  marketProjectList: {
+    list: [],
+    total: 0,
+  },
 };
 const mutations = {
   SET_MY_PROJECTS(state, myProjects) {
@@ -16,6 +19,9 @@ const mutations = {
   },
   SET_CURRENT_PROJECT(state, currentProject) {
     state.currentProject = currentProject;
+  },
+  SET_MARKET_PROJECT_LIST(state, marketProjectList) {
+    state.marketProjectList = marketProjectList;
   },
 };
 const actions = {
@@ -40,6 +46,20 @@ const actions = {
     const ret = await axios.post('/dataapi/dpower/myProjects', data);
     if (ret.ok) {
       commit('SET_MY_PROJECTS', ret.data);
+    } else {
+      Message.error(ret.msg || '查询项目列表失败');
+    }
+  },
+
+  // 所有项目的page分页查询
+  async searchAllProjects({ commit }, data) {
+    commit('SET_MY_PROJECTS', {
+      list: [],
+      total: 0,
+    });
+    const ret = await axios.post('/dataapi/dproject/page', data);
+    if (ret.ok) {
+      commit('SET_MARKET_PROJECT_LIST', ret.data);
     } else {
       Message.error(ret.msg || '查询项目列表失败');
     }
@@ -84,11 +104,29 @@ const actions = {
       Message.error(ret.msg || 'url修改失败');
     }
   },
+   // 手动添加项目使用者 userId projectId
+  async addUser2project(store, data) {
+    const ret = await axios.post('/dataapi/dpower/addUser', data);
+    if (ret.ok) {
+     Message.success('用户添加成功');
+   } else {
+     Message.error(ret.msg || '用户添加失败');
+   }
+  },
+   // 手动删除项目中用户
+  async removerUser(store, powerId) {
+    const ret = await axios.delete(`/dataapi/dpower/${powerId}`);
+    if (ret.ok) {
+      Message.success('用户删除成功');
+    } else {
+      Message.error(ret.msg || '用户删除失败');
+    }
+  },
 };
 const getters = {
   myProjects: state => state.myProjects,
   currentProject: state => state.currentProject,
-  
+  marketProjectList: state => state.marketProjectList,
 };
 
 export default{

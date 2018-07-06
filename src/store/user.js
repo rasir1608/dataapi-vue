@@ -5,11 +5,18 @@ import router from '@/router';
 const state = {
   // 用户信息
   userInfo: '',
+  userList4add: [],
+  membersList4project: [],
 };
 const mutations = {
   SET_USER_INFO(state, userInfo) {
     state.userInfo = userInfo;
-    console.log(userInfo);
+  },
+  SET_USER_LIST_4_ADD(state, userList4add) {
+    state.userList4add = userList4add;
+  },
+  SET_MEMBERS_4_PROJECT(state, membersList4project) {
+    state.membersList4project = membersList4project;
   },
 };
 const actions = {
@@ -78,11 +85,29 @@ const actions = {
     }
     Message.error(ret.msg || '昵称修改失败！');
   },
+  // 获取项目中用户的信息 power >= 2
+  async getMembers4project({ commit }, projectId) {
+    const ret = await axios.get(`/dataapi/dpower/userList/${projectId}`);
+    if (ret.ok) {
+      commit('SET_MEMBERS_4_PROJECT', ret.data);
+      return;
+    }
+    Message.error(ret.msg || '项目中用户列表获取失败！');
+  },
+  // 获取项目中用户的信息 power >= 2
+  async getUserList4add({ commit }, userName) {
+    const ret = await axios.get(`/dataapi/duser/getUserListByName/${userName}`);
+    if (ret.ok) {
+      commit('SET_USER_LIST_4_ADD', ret.data);
+      return;
+    }
+    Message.error(ret.msg || '用户列表获取失败！');
+  },
 };
 const getters = {
-  userInfo(state) {
-    return state.userInfo;
-  },
+  userInfo: state => state.userInfo,
+  userList4add: state => state.userList4add,
+  membersList4project: state => state.membersList4project,
 };
 
 export default{

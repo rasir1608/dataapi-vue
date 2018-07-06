@@ -58,6 +58,16 @@ const actions = {
     }
   },
 
+  // 申请项目
+  async applyProject(store, projectId) {
+    const ret = await axios.get(`/dataapi/dpower/create/${projectId}`);
+    if (ret.ok) {
+      Message.success('已进入申请流程，请联系项目管理员');
+    } else {
+      Message.error(ret.msg || '申请项目失败');
+    }
+  },
+
 };
 const getters = {
   myApplingProjects: state => state.myApplingProjects,

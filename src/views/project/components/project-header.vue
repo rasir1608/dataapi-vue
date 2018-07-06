@@ -4,7 +4,7 @@
       .project-name.form-item-5
         .label 项目名称：
         .input 
-          // el-input(v-if='isEdite',v-model='currentProject.name')
+          // el-input(v-if='canEdite()',v-model='currentProject.name')
           div {{currentProject.name}}
       .project-other
         .project-items
@@ -19,13 +19,13 @@
             .input {{currentProject.creatorName}}
         .project-models
           span
-            a(v-if='isEdite',@click='showEditeDialog("model")') 原型
+            a(v-if='canEdite()',@click='showEditeDialog("model")') 原型
             a(v-else,:href='currentProject.model',target='_blank') 原型
           span
-            a(v-if='isEdite',@click='showEditeDialog("ui")') UI
+            a(v-if='canEdite()',@click='showEditeDialog("ui")') UI
             a(v-else,:href='currentProject.ui',target='_blank') UI
           span
-            a(v-if='isEdite',@click='showEditeDialog("web")') WEB
+            a(v-if='canEdite()',@click='showEditeDialog("web")') WEB
             a(v-else,:href='currentProject.web',target='_blank') WEB
           span
             a(@click='membersShow=true') 项目协作人
@@ -33,12 +33,12 @@
         .form-item-5
           .label 备注：
           .input
-            el-input(v-if='isEdite',v-model='currentProject.remarks' placeholder='请输入项目备注',type='textarea')
+            el-input(v-if='canEdite()',v-model='currentProject.remarks' placeholder='请输入项目备注',type='textarea')
             div(v-else) {{currentProject.remarks}}
-        .project-remark-ctrl(v-if='isEdite')
+        .project-remark-ctrl(v-if='canEdite()')
           el-button(type='primary',@click='saveRemarks') 保存备注
     .project-interface-search
-      .project-interface-ctrol(v-if='isEdite')
+      .project-interface-ctrol(v-if='canEdite()')
         el-input(v-model='newInterfaceName' placeholder='请输入新接口名称')
         el-button(type='primary',@click='createInterface') 创建接口
       .project-interface-form
@@ -55,7 +55,7 @@
           el-button(@click='resetSearch') 重置
           el-button(type='primary',@click='searchInter') 查询
     models-dialog(:show.sync='modelsShow',:model='modelData')
-    project-members-dialog(:show.sync='membersShow')
+    project-members-dialog(:show.sync='membersShow',:is-edite='canEdite()')
 </template>
 <script>
 import { mapGetters } from 'vuex';
@@ -139,6 +139,9 @@ export default {
         updateTime: Date.now(),
       };
       await this.$store.dispatch('createInterface', interData);
+    },
+    canEdite() {
+      return this.isEdite && this.currentProject.power > 1;
     },
   },
 };

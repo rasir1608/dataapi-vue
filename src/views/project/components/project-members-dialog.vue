@@ -1,103 +1,87 @@
 <template lang="pug">
   .project-members-dialog
-    el-dialog(title="项目协作人",:visible.sync="membersShow",width="30%")
+    el-dialog(title="项目协作人",:visible.sync="membersShow",width="30%",@close='beforeClose')
       main
-        .add-members
-          el-select(v-model='account',remote,filterable,placeholder="请输入关键词",:remote-method="remoteMethod",:loading="loading",default-first-option)
+        .add-members(v-if='isEdite')
+          el-select(v-model='addUserId',@change='addMember',clearable,remote,filterable,placeholder="请输入用户昵称",:remote-method="getUserList",:loading="loading",default-first-option)
             i.el-icon-search(slot='prefix')
-            el-option(v-for="(item,index) in userList", :key="item.value",:label="item.label",:value="item.value")
+            el-option(v-for="(item,index) in userList4add", :key="index",:label="item.name",:value="item.id")
         .members-list
-          el-table.process-table(:data='membersList',height='300',style='width:100%')
+          el-table.process-table(:data='membersList4project',height='300',style='width:100%')
             el-table-column(type='index',width='50',label='序号')
             el-table-column(prop='userId',label='用户ID')
             el-table-column(prop='userName',label='用户名')
-            el-table-column(label='操作',width='60',align='center')
+            el-table-column(prop='power',label='权限')
+              span(slot-scope='scope') {{scope.row.power | powerMap}}
+            el-table-column(v-if='isEdite',label='操作',width='60',align='center')
               i.el-icon-delete(slot-scope='scope',@click='removeUser(scope.row)')
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
-  props: ['show', 'projectId'],
+  props: ['show', 'projectId', 'isEdite'],
   data() {
     return {
       membersShow: false,
       loading: false,
-      account: '',
+      addUserId: '',
       userList: [],
-      membersList: [
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-        {
-          userId: '10001',
-          userName: 'rasir001',
-        },
-      ],
+      membersList: [],
     };
   },
   watch: {
     show(val) {
       this.membersShow = val;
+      if (val) this.getMembers();
     },
     membersShow(val) {
       this.$emit('update:show', val);
     },
   },
+  computed: {
+    ...mapGetters([
+      'currentProject',
+      'userList4add',
+      'membersList4project',
+    ]),
+  },
+  created() {
+    
+  },
   methods: {
-    remoteMethod(query) {
-      console.log(query);
+    async getMembers() {
+      await this.$store.dispatch('getMembers4project', this.currentProject.id);
+    },
+    async getUserList(query) {
+      await this.$store.dispatch('getUserList4add', query);
+    },
+    async addMember() {
+      if (this.membersList4project.findIndex(e => e.id === this.addUserId) > -1) {
+        this.$message.error('该用户已经在项目中，无需重复添加');
+        return;
+      }
+      const data = {
+        userId: this.addUserId,
+        projectId: this.currentProject.id,
+      };
+      await this.$store.dispatch('addUser2project', data);
+      await this.getMembers();
     },
     removeUser(row) {
+      const vm = this;
       this.$alert('该操作将永久删除用户，是否继续？', '提示', {
-        callback(action) {
-          console.log(action, row);
+        async callback(action) {
           if (action === 'confirm') {
-            console.log('确定');
-          } else if (action === 'cancel') {
-            console.log('取消');
-          }
+            await vm.$store.dispatch('removerUser', row.powerId);
+            await vm.getMembers();
+          } 
         },
       });
+    },
+    beforeClose() {
+      this.addUserId = '';
+      this.$store.commit('SET_USER_LIST_4_ADD', []);
     },
   },
 };

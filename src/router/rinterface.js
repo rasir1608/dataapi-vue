@@ -4,14 +4,9 @@ export default {
   component: () => import('@/views/interface/layout/main'),
   children: [
     {
-      path: 'create',
-      name: 'InterfaceCreate',
-      component: () => import('@/views/interface/layout/create'),
-    },
-    {
       path: 'edite/:id',
       name: 'InterfaceEdite',
-      component: () => import('@/views/interface/layout/edite'),
+      component: () => import('@/views/interface/layout/detail'),
     },
     {
       path: 'detail/:id',

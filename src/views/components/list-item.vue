@@ -8,14 +8,16 @@
             .item-footer
                 .form-item-5
                     .label 创建人：
-                    .input {{item.creator}}
+                    .input {{item.creatorName}}
                 .form-item-5
                     .label 创建时间：
                     .input {{item.createTime}}
         .list-item-cover
             .list-item-btns
-                span(@click='$emit("edite")') 编辑
+                span(@click='$emit("apply")',v-if='canApply(item)') 申请
+                span(@click='$router.push("/project/edite/"+item.projectId)',v-if='item.power > 1') 编辑
                 span(@click='$emit("delete")',v-if='item.power === 5') 删除
+                span(@click='$router.push("/project/detail/"+item.projectId)') 查看
 </template>
 <script>
 export default {
@@ -28,6 +30,7 @@ export default {
                     remarks: ' 此处为项目描述：项目描述',
                     creator: 'rasir',
                     createTime: '2018-06-30',
+                    power: '',
                 };
             },
         },
@@ -36,6 +39,11 @@ export default {
         return {
             
         };
+    },
+    methods: {
+      canApply(item) {
+        return !/^\d$/.test(item.power);
+      },
     },
 };
 </script>
