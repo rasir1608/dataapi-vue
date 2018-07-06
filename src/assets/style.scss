@@ -233,3 +233,9 @@ a {
 .form-item-5{
   @include formItem(5);
 }
+
+.input-hint{
+  input{
+    border-color: $red;
+  }
+}

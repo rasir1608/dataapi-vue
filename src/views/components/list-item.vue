@@ -14,8 +14,8 @@
                     .input {{item.createTime}}
         .list-item-cover
             .list-item-btns
-                span 编辑
-                span 删除
+                span(@click='$emit("edite")') 编辑
+                span(@click='$emit("delete")',v-if='item.power === 5') 删除
 </template>
 <script>
 export default {
@@ -74,6 +74,7 @@ export default {
             .item-main{
                 flex: 1;
                 text-indent: 2em;
+                padding: 5px;
             }
             .item-footer{
                 height: 50px;

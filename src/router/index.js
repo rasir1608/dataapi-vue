@@ -10,7 +10,13 @@ const vueRouter = new Router({
 });
 // 验证是否有调度平台权限
 vueRouter.beforeEach((to, from, next) => {
-      next();
+    // if (!/\/login/.test(to.path) && !store.state.user.userInfo) {
+    //   next('/login');
+    // } else {
+    //   next();
+    // }
+    console.log(to.path, from.path);
+    next();
 });
 vueRouter.afterEach((to) => {
     const meta = to.meta;

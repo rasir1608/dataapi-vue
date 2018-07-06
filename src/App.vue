@@ -16,6 +16,9 @@ export default {
         return this.$store.state.global.loading;
       },
   },
+  created() {
+    this.$store.dispatch('getUserInfo');
+  },
 };
 </script>
 

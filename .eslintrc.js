@@ -56,6 +56,7 @@ module.exports = {
     "import/prefer-default-export":"off",
     "no-shadow":"off",
     "no-fallthrough":"off",
+    "no-use-before-define":"off",
     // allow optionalDependencies
     'import/no-extraneous-dependencies': ['error', {
       'optionalDependencies': ['test/unit/index.js']

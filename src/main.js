@@ -20,6 +20,13 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.prototype.axios = axios;
 Vue.prototype.moment = moment;
+Vue.filter('formatDate', (time, format) => {
+  if (!time) return '';
+  if (!(time instanceof Date)) time = new Date(Number(time));
+  format = format || 'YYYY-MM-DD hh:mm:ss';
+  return moment(time).format(format);
+});
+Vue.prototype.trimStr = string => string.trim();
 /* eslint-disable no-new */
 new Vue({
     el: '#app',

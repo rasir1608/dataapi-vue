@@ -14,6 +14,14 @@ module.exports = {
           '^/api': ''
         },
       },
+      "/dataapi": {
+        target: `http://localhost:8089`,
+        secure: true, // 不接受 运行在 https 上的服务
+        changeOrigin: true,
+        pathRewrite: {
+          '^/dataapi': '/dataapi'
+        },
+      },
     },
     // Various Dev Server settings
     host: '0.0.0.0', // can be overwritten by process.env.HOST

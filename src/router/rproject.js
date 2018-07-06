@@ -12,14 +12,9 @@ export default {
       component: () => import('@/views/project/layout/market'),
     },
     {
-      path: 'create',
-      name: 'ProjectCreate',
-      component: () => import('@/views/project/layout/create'),
-    },
-    {
       path: 'edite/:id',
       name: 'ProjectEdite',
-      component: () => import('@/views/project/layout/edite'),
+      component: () => import('@/views/project/layout/detail'),
     },
     {
       path: 'detail/:id',

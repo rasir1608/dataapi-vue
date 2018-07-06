@@ -3,23 +3,24 @@
     el-dialog(:title="model.title",:visible.sync="modelShow",width="30%")
       main
         .form-item-5
-          .label url:
+          .label url：
           .input
-            el-input(v-model='model.url')
+            el-input(v-model='model.url',@blur='model.url = trimStr(model.url)')
       footer(slot="footer")
         el-button(@click='modelShow = false') 取消
-        el-button(type='primary') 修改
+        el-button(type='primary',@click='updateUrl') 修改
         el-upload(:action="model.path",
                   :multiple='false',
                   :show-file-list='false',
                   name='file',
-                  :headers='{"Content-type":"multipart/form-data"}',
                   :before-upload='beforeUpload',
                   :on-success='uploadSuccess',
                   :on-error='uploadError')
-          el-button(type='primary') 上传
+          el-button(type='primary') 上传图片
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   props: ['model', 'show'],
   data() {
@@ -34,11 +35,21 @@ export default {
     modelShow(val) {
       this.$emit('update:show', val);
     },
+    currentProject: {
+      handler(project) {
+        this.model.url = project[this.model.tag];
+      },
+      deep: true,
+    },
+  },
+  computed: {
+    ...mapGetters([
+      'currentProject',
+    ]),
   },
   methods: {
     beforeUpload(file) {
       const fileType = file.type;
-      console.log(79, fileType);
       if (!/^image\b/.test(fileType)) {
         this.$message.error('请上传图片格式的文件');
         return false;
@@ -46,10 +57,21 @@ export default {
       return true;
     },
     uploadSuccess(res) {
-      console.log(46, res);
+      if (res.ok) {
+        this.model.url = res.data;
+        this.currentProject[this.model.tag] = res.data;
+        this.$store.commit('SET_CURRENT_PROJECT', this.currentProject);
+        this.$message.success('图片上传成功');
+      } else {
+        this.$message.error(res.msg || '图片上传失败');
+      }
     },
     uploadError(err) {
-      console.log(err);
+      this.$message.error(err);
+    },
+    updateUrl() {
+      const { url, tag } = this.model;
+      this.$store.dispatch('updateUrl', { tag, url, projectId: this.currentProject.id });
     },
   },
 };

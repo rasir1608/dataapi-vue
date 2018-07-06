@@ -24,13 +24,16 @@ axios.interceptors.response.use(
     (res) => {
         count--;
         if (count === 0) store.commit('SET_LOADING', false);
-        if (res.data.status === 302) {
+        if (res.data.state === 302) {
+            Message.error(res.data.errMsg || '请先登录');
             window.location.href = '#/login';
-        } else if (res.data.status === 401) {
+        } else if (res.data.state === 401) {
+            Message.error(res.data.errMsg || '没有访问权限');
             window.location.href = '#/401';
-        } else if (res.data.status === 404) {
+        } else if (res.data.state === 404) {
+            Message.error(res.data.errMsg || '没有找到网页');
             window.location.href = '#/404';
-        } else if (res.data.status === 500) {
+        } else if (res.data.state === 500) {
             Message.error(res.data.errMsg || '服务器异常！');
         }
         return res.data;

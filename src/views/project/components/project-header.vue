@@ -3,52 +3,62 @@
     .project-info
       .project-name.form-item-5
         .label 项目名称：
-        .input 接口市场接口市场接口市场接口市场接口市场
+        .input 
+          // el-input(v-if='isEdite',v-model='currentProject.name')
+          div {{currentProject.name}}
       .project-other
         .project-items
           .form-item-2
             .label 项目编号：
-            .input 1000
+            .input {{currentProject.id}}
           .form-item-2
             .label 创建时间：
-            .input 2018-06-04
+            .input {{currentProject.createTime | formatDate('YYYY-MM-DD')}}
           .form-item-2
             .label 创建人：
-            .input rasir
+            .input {{currentProject.creatorName}}
         .project-models
-          a(@click='modelsShow=true') 原型
-          a UI
-          a web
-          a(@click='membersShow=true') 项目协作人
+          span
+            a(v-if='isEdite',@click='showEditeDialog("model")') 原型
+            a(v-else,:href='currentProject.model',target='_blank') 原型
+          span
+            a(v-if='isEdite',@click='showEditeDialog("ui")') UI
+            a(v-else,:href='currentProject.ui',target='_blank') UI
+          span
+            a(v-if='isEdite',@click='showEditeDialog("web")') WEB
+            a(v-else,:href='currentProject.web',target='_blank') WEB
+          span
+            a(@click='membersShow=true') 项目协作人
       .project-remark
         .form-item-5
           .label 备注：
           .input
-            div 此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注
-            //el-input(v-model='remarks' placeholder='请输入项目备注',type='textarea')
-        .project-remark-ctrl
-          el-button(type='primary') 保存备注
+            el-input(v-if='isEdite',v-model='currentProject.remarks' placeholder='请输入项目备注',type='textarea')
+            div(v-else) {{currentProject.remarks}}
+        .project-remark-ctrl(v-if='isEdite')
+          el-button(type='primary',@click='saveRemarks') 保存备注
     .project-interface-search
-      .project-interface-ctrol
-        el-button(type='primary') 编辑项目
-        el-button(type='primary') 创建接口
+      .project-interface-ctrol(v-if='isEdite')
+        el-input(v-model='newInterfaceName' placeholder='请输入新接口名称')
+        el-button(type='primary',@click='createInterface') 创建接口
       .project-interface-form
         .project-interface-form-items
           .form-item-1
             .label 接口ID：
             .input
-              el-input(placeholder='请输入接口ID')
+              el-input(placeholder='请输入接口ID',v-model='search.id')
           .form-item-1
             .label 接口名称：
             .input
-              el-input(placeholder='请输入接口名称')
+              el-input(placeholder='请输入接口名称',v-model='search.name')
         .project-interface-form-submits
-          el-button 重置
-          el-button(type='primary') 查询
-    models-dialog(:show.sync='modelsShow',:model='model')
+          el-button(@click='resetSearch') 重置
+          el-button(type='primary',@click='searchInter') 查询
+    models-dialog(:show.sync='modelsShow',:model='modelData')
     project-members-dialog(:show.sync='membersShow')
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import ModelsDialog from './models-dialog';
 import ProjectMembersDialog from './project-members-dialog';
 
@@ -57,20 +67,79 @@ export default {
     ModelsDialog,
     ProjectMembersDialog,
   },
+  props: ['isEdite', 'search'],
   data() {
     return {
-      remarks: '',
+      newInterfaceName: '',
       modelsShow: false,
       membersShow: false,
-      model: {
+      modelData: {
         title: '项目原型',
         url: '/rasir/header_201806040001',
         path: 'https://jsonplaceholder.typicode.com/posts/',
       },
     };
   },
+  computed: {
+    ...mapGetters([
+      'currentProject',
+      'userInfo',
+    ]),
+  },
   methods: {
-    
+    saveRemarks() {
+      if (this.currentProject.power < 2) {
+        this.$message.error('您没有项目修改权限');
+        return;
+      }
+      this.$store.dispatch('updateProject', this.currentProject);
+    },
+    showEditeDialog(tag) {
+      if (this.currentProject.power < 2) {
+        this.$message.error('您没有项目修改权限');
+        return;
+      }
+      const titles = {
+        model: '项目原型',
+        ui: 'UI设计',
+        web: 'web预览',
+      };
+      this.modelData = {
+        tag,
+        title: titles[tag],
+        url: this.currentProject[tag],
+        path: `/dataapi/dproject/upload/${tag}/${this.currentProject.id}`,
+      };
+      this.modelsShow = true;
+    },
+    // 重置搜索数据
+    resetSearch() {
+      Object.assign(this.search, {
+        id: '',
+        name: '',
+      });
+      this.searchInter();
+    },
+    searchInter() {
+      this.$emit('search');
+    },
+
+    // 创建接口信息
+    createInterface() {
+      if (/^\s*$/.test(this.newInterfaceName)) {
+        this.$message.error('请先输入新接口的名称');
+        return;
+      }
+      const interData = {
+        name: this.newInterfaceName,
+        creator: this.userInfo.id,
+        modifier: this.userInfo.id,
+        project: this.currentProject.id,
+        createTime: Date.now(),
+        updateTime: Date.now(),
+      };
+      this.$store.dispatch('createInterface', interData);
+    },
   },
 };
 </script>
@@ -132,6 +201,7 @@ export default {
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        margin: 5px 0;
       }
     }
   }
@@ -140,6 +210,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .project-interface-ctrol{
+      display: flex;
+    }
     .project-interface-form{
       display: flex;
       align-items: center;
