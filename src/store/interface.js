@@ -8,10 +8,14 @@ const state = {
     list: [],
     total: 0,
   },
+  currentInterface: {},
 };
 const mutations = {
   SET_INTERFACE_DATA(state, interfaceData) {
     state.interfaceData = interfaceData;
+  },
+  SET_CURRENT_INTERFACE(state, currentInterface) {
+    state.currentInterface = currentInterface;
   },
 };
 const actions = {
@@ -44,9 +48,19 @@ const actions = {
       Message.error(ret.msg || '接口删除失败');
     }
   },
+   // 根据ID获取接口详情
+   async getInterfaceById({ commit }, interfaceId) {
+    const ret = await axios.get(`/dataapi/dinterface/${interfaceId}`);
+    if (ret.ok) {
+      commit('SET_CURRENT_INTERFACE', ret.data);
+    } else {
+      Message.error(ret.msg || '接口删除失败');
+    }
+  },
 };
 const getters = {
   interfaceData: state => state.interfaceData,
+  currentInterface: state => state.currentInterface,
 };
 
 export default{

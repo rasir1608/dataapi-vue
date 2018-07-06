@@ -12,7 +12,7 @@
           .form-item-2
             .label 所属项目：
             .input 
-              a(href='/aaa') 接口市场
+              a(href='javascript:void(0);',@click='$router.push("/project/detail/"+interData.project)') {{interData.projectName}}
           .form-item-2
             .label 创建时间：
             .input 2018-06-04
@@ -26,7 +26,7 @@
             div 此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注
             //el-input(v-model='remarks' placeholder='请输入项目备注',type='textarea')
         .interface-remark-ctrl
-          el-button(type='primary') 保存备注
+          el-button(type='primary',v-if='isEdite') 保存备注
     .interface-props
       .interface-props-form
         .interface-props-form-items
@@ -54,10 +54,11 @@
                 el-option(value='multipart/form-data') multipart/form-data
                 el-option(value='text/xml') text/xml
       .interface-props-form-submits
-        el-button 重置
+        el-button(v-if='isEdite') 重置
 </template>
 <script>
 export default {
+  props: ['isEdite', 'interData'],
   data() {
     return {
       remarks: '',

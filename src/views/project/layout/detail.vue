@@ -54,6 +54,7 @@ export default {
     if (isEdite && project.power < 2) {
       Message.error('您没有编辑该项目的权限');
       next(false);
+      return;
     }
     next((vm) => {
       vm.isEdite = isEdite;
