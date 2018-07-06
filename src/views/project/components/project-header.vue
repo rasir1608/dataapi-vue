@@ -125,7 +125,7 @@ export default {
     },
 
     // 创建接口信息
-    createInterface() {
+    async createInterface() {
       if (/^\s*$/.test(this.newInterfaceName)) {
         this.$message.error('请先输入新接口的名称');
         return;
@@ -138,7 +138,7 @@ export default {
         createTime: Date.now(),
         updateTime: Date.now(),
       };
-      this.$store.dispatch('createInterface', interData);
+      await this.$store.dispatch('createInterface', interData);
     },
   },
 };

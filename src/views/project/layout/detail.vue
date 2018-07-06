@@ -1,7 +1,7 @@
 <template lang="pug">
   .project-detail
     project-header(:is-edite='isEdite',:search='searchInterface',@search='resetCurrentPage')
-    project-main(:is-edite='isEdite',:search='searchInterface')
+    project-main(:is-edite='isEdite',:search='searchInterface',@delete='deleteInterface')
 </template>
 <script>
 import store from '@/store';
@@ -72,9 +72,21 @@ export default {
       await this.$store.dispatch('getInterfaceList', data);
       if ((this.interfaceData.list.length === 0 && this.interfaceData.total > 0) && this.searchInterface.currentPage > 1) this.searchInterface.currentPage -= 1;
     },
-    resetCurrentPage() {
-      if (this.searchInterface.currentPage === 1) this.getInterfaceList();
+    async resetCurrentPage() {
+      if (this.searchInterface.currentPage === 1) await this.getInterfaceList();
       else this.searchInterface.currentPage = 1;
+    },
+    deleteInterface(row) {
+      const vm = this;
+      this.$alert('该操作将永久删除接口信息，是否继续？', '提示', {
+        showCancelButton: true,
+        async callback(action) {
+          if (action === 'confirm') {
+            await vm.$store.dispatch('deleteInterface', row.id);
+            await vm.getInterfaceList();
+          }
+        },
+      });
     },
   },
 };
