@@ -19,6 +19,7 @@
     background: $white;
     border-radius: $borderRadius;
     font-size: $bigFont;
+    overflow: auto;
     >main{
       width: 400px;
       margin: 100px auto 50px;

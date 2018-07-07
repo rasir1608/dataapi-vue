@@ -1,6 +1,6 @@
 <template lang="pug">
   .project-members-dialog
-    el-dialog(title="项目协作人",:visible.sync="membersShow",width="30%",@close='beforeClose')
+    el-dialog(width="500px",title="项目协作人",:visible.sync="membersShow",@close='beforeClose')
       main
         .add-members(v-if='isEdite')
           el-select(v-model='addUserId',@change='addMember',clearable,remote,filterable,placeholder="请输入用户昵称",:remote-method="getUserList",:loading="loading",default-first-option)

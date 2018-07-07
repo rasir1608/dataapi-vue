@@ -3,65 +3,65 @@
     .interface-info
       .interface-name.form-item-5
         .label 接口名称：
-        .input 登录接口
+        .input {{ interData.name }}
       .interface-other
         .interface-items
           .form-item-2
             .label 接口编号：
-            .input 10001
+            .input {{ interData.id }}
           .form-item-2
             .label 所属项目：
             .input 
               a(href='javascript:void(0);',@click='$router.push("/project/detail/"+interData.project)') {{interData.projectName}}
           .form-item-2
             .label 创建时间：
-            .input 2018-06-04
+            .input {{ interData.createTime | formatDate('YYYY-MM-DD') }}
           .form-item-2
             .label 创建人：
-            .input rasir
+            .input {{ interData.creatorName }}
       .interface-remark
         .form-item-5
           .label 备注：
           .input
-            div 此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注此处为项目备注
-            //el-input(v-model='remarks' placeholder='请输入项目备注',type='textarea')
-        .interface-remark-ctrl
-          el-button(type='primary',v-if='isEdite') 保存备注
+            el-input(v-if='isEdite',v-model='interData.remarks' placeholder='请输入项目备注',type='textarea')
+            div(v-else) {{ interData.remarks }}
+        // .interface-remark-ctrl
+          el-button(type='primary',v-if='isEdite',@click='$emit("update")') 保存备注
     .interface-props
       .interface-props-form
         .interface-props-form-items
           .form-item-2
             .label URL：
             .input
-              div /api/interface/create
-              //el-input(placeholder='请输入完整接口路径')
+              el-input(v-if='isEdite',v-model='interData.path',placeholder='请输入完整接口路径')
+              div(v-else) {{ interData.path || '未填写' }}
           .form-item-2
             .label Method：
             .input
-              div POST
-              //el-select(placeholder='请选择接口请求方式')
+              el-select(v-if='isEdite',v-model='interData.method',placeholder='请选择接口请求方式')
                 el-option(value='GET') GET
                 el-option(value='POST') POST
                 el-option(value='PUT') PUT
                 el-option(value='DELETE') DELETE
+              div(v-else) {{ interData.method || '未填写' }}
           .form-item-2
             .label Content-type：
             .input
-              div application/x-www-form-urlencoded
-              //el-select(placeholder='请选择Content-type')
+              el-select(v-if='isEdite',v-model='interData.contentType',placeholder='请选择Content-type')
                 el-option(value='application/json') application/json
                 el-option(value='application/x-www-form-urlencoded') application/x-www-form-urlencoded
                 el-option(value='multipart/form-data') multipart/form-data
                 el-option(value='text/xml') text/xml
+              div(v-else) {{ interData.contentType || '未填写' }}
       .interface-props-form-submits
-        el-button(v-if='isEdite') 重置
+        el-button(v-if='isEdite',@click='$emit("reset")') 重置
+        el-button(v-if='isEdite',type='primary',@click='$emit("update")') 保存
 </template>
 <script>
 export default {
   props: ['isEdite', 'interData'],
   data() {
     return {
-      remarks: '',
     };
   },
 };
@@ -120,6 +120,7 @@ export default {
         display: flex;
         justify-content: flex-end;
         align-items: center;
+        padding: 5px 0;
       }
     }
   }

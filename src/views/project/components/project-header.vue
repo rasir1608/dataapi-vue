@@ -20,13 +20,19 @@
         .project-models
           span
             a(v-if='canEdite()',@click='showEditeDialog("model")') 原型
-            a(v-else,:href='currentProject.model',target='_blank') 原型
+            span(v-else)
+              span(v-if='!currentProject.model') 暂无原型
+              a(v-else,:href='currentProject.model',target='_blank') 原型
           span
             a(v-if='canEdite()',@click='showEditeDialog("ui")') UI
-            a(v-else,:href='currentProject.ui',target='_blank') UI
+            span(v-else)
+              span(v-if='!currentProject.ui') 暂无UI
+              a(v-else,:href='currentProject.ui',target='_blank') UI
           span
             a(v-if='canEdite()',@click='showEditeDialog("web")') WEB
-            a(v-else,:href='currentProject.web',target='_blank') WEB
+            span(v-else)
+              span(v-if='!currentProject.web') 暂无WEB
+              a(v-else,:href='currentProject.web',target='_blank') WEB
           span
             a(@click='membersShow=true') 项目协作人
       .project-remark
@@ -41,6 +47,8 @@
       .project-interface-ctrol(v-if='canEdite()')
         el-input(v-model='newInterfaceName' placeholder='请输入新接口名称')
         el-button(type='primary',@click='createInterface') 创建接口
+      .project-interface-edite(v-if='!isEdite && currentProject.power > 1')
+        el-button(type='primary',@click='editeProject') 编辑项目
       .project-interface-form
         .project-interface-form-items
           .form-item-1
@@ -74,9 +82,10 @@ export default {
       modelsShow: false,
       membersShow: false,
       modelData: {
-        title: '项目原型',
-        url: '/rasir/header_201806040001',
-        path: 'https://jsonplaceholder.typicode.com/posts/',
+        tag: '',
+        title: '',
+        url: '',
+        path: '',
       },
     };
   },
@@ -140,6 +149,9 @@ export default {
       };
       await this.$store.dispatch('createInterface', interData);
     },
+    editeProject() {
+      this.$router.push(`/project/edite/${this.currentProject.id}`);
+    },
     canEdite() {
       return this.isEdite && this.currentProject.power > 1;
     },
@@ -183,10 +195,12 @@ export default {
         }
       }
       .project-models{
+        >span{
+          padding: 0 10px;
+        }
         a{
           color: $pr;
           text-decoration: underline;
-          padding: 0 10px;
           cursor: pointer;
         }
       }

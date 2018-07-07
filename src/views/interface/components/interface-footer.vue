@@ -1,10 +1,15 @@
 <template lang="pug">
   .interface-footer
-    el-button 返回
-    el-button(type='primary') 编辑
-    el-button(type='primary') 保存
-    el-button(type='primary') 删除接口
+    el-button(@click='$emit("action","back")') 返回
+    el-button(v-if='isEdite',type='primary',@click='$emit("action","delete")') 删除接口
+    el-button(v-else,type='primary',@click='$emit("action","edite")') 编辑接口
 </template>
+<script>
+export default {
+  props: ['isEdite'],
+};
+</script>
+
 <style lang="scss">
   .interface-footer{
     display: flex;
@@ -13,6 +18,11 @@
     background: $white;
     border: 1px solid $border;
     padding: 20px;
+    .edite-btns{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 </style>
 

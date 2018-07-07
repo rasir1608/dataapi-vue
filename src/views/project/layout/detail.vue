@@ -39,6 +39,12 @@ export default {
       },
       deep: true,
     },
+    $route: {
+      handler() {
+        this.loadProjectData();
+      },
+      deep: true,
+    },
   },
   computed: {
     ...mapGetters([
@@ -46,22 +52,11 @@ export default {
       'interfaceData',
     ]),
   },
-  async beforeRouteEnter(to, from, next) {
-    const isEdite = /edite/.test(to.path);
-    const projectId = to.params.id;
-    await store.dispatch('getProjectById', projectId);
-    const project = store.state.project.currentProject;
-    if (isEdite && project.power < 2) {
-      Message.error('您没有编辑该项目的权限');
-      next(false);
-      return;
-    }
-    next((vm) => {
-      vm.isEdite = isEdite;
-    });
+  async created() {
+    await this.loadProjectData();
+    await this.resetCurrentPage();
   },
   mounted() {
-    this.resetCurrentPage();
   },
   methods: {
     async getInterfaceList() {
@@ -88,6 +83,16 @@ export default {
           }
         },
       });
+    },
+    // 加载项目数据
+    async loadProjectData() {
+      this.isEdite = /edite/.test(this.$route.path);
+      const projectId = this.$route.params.id;
+      await store.dispatch('getProjectById', projectId);
+      if (this.isEdite && this.currentProject.power < 2) {
+        Message.error('您没有编辑该项目的权限');
+        this.$router.push(`/project/detail/${this.currentProject.id}`);
+      }
     },
   },
 };

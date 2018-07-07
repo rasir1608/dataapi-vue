@@ -52,9 +52,33 @@ const actions = {
    async getInterfaceById({ commit }, interfaceId) {
     const ret = await axios.get(`/dataapi/dinterface/${interfaceId}`);
     if (ret.ok) {
-      commit('SET_CURRENT_INTERFACE', ret.data);
+      const inter = {};
+      const ci = ret.data;
+      Object.keys(ci).forEach((key) => {
+        const value = ci[key];
+        if (value === null) inter[key] = '';
+        else inter[key] = value;
+      });
+      commit('SET_CURRENT_INTERFACE', inter);
     } else {
       Message.error(ret.msg || '接口删除失败');
+    }
+  },
+  // 修改接口数据
+  async updateInterface({ commit }, data) {
+    const ret = await axios.post('/dataapi/dinterface/save', data);
+    if (ret.ok) {
+      Message.success('接口更新成功');
+      const inter = {};
+      const ci = ret.data;
+      Object.keys(ci).forEach((key) => {
+        const value = ci[key];
+        if (value === null) inter[key] = '';
+        else inter[key] = value;
+      });
+      commit('SET_CURRENT_INTERFACE', inter);
+    } else {
+      Message.error(ret.msg || '接口更新失败');
     }
   },
 };
