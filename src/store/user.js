@@ -7,6 +7,7 @@ const state = {
   userInfo: '',
   userList4add: [],
   membersList4project: [],
+  signcodeOk: false,
 };
 const mutations = {
   SET_USER_INFO(state, userInfo) {
@@ -17,6 +18,9 @@ const mutations = {
   },
   SET_MEMBERS_4_PROJECT(state, membersList4project) {
     state.membersList4project = membersList4project;
+  },
+  SET_SIGN_CODE_OK(state, signcodeOk) {
+    state.signcodeOk = signcodeOk;
   },
 };
 const actions = {
@@ -94,7 +98,7 @@ const actions = {
     }
     Message.error(ret.msg || '项目中用户列表获取失败！');
   },
-  // 获取项目中用户的信息 power >= 2
+  // 模糊搜索用户列表
   async getUserList4add({ commit }, userName) {
     const ret = await axios.get(`/dataapi/duser/getUserListByName/${userName}`);
     if (ret.ok) {
@@ -103,11 +107,25 @@ const actions = {
     }
     Message.error(ret.msg || '用户列表获取失败！');
   },
+  // 校验验证码
+  async checkSignCode({ commit }, signcode) {
+    const ret = await axios.get(`/dataapi/duser/checkVerificationCode/${signcode}`, {
+      isLoading: false,
+    });
+    if (ret.ok) {
+      commit('SET_SIGN_CODE_OK', true);
+      Message.success(ret.data || '验证码正确');
+      return;
+    }
+    commit('SET_SIGN_CODE_OK', false);
+    Message.error(ret.msg || '验证码校验失败');
+  },
 };
 const getters = {
   userInfo: state => state.userInfo,
   userList4add: state => state.userList4add,
   membersList4project: state => state.membersList4project,
+  signcodeOk: state => state.signcodeOk,
 };
 
 export default{

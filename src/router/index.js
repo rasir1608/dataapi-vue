@@ -6,17 +6,7 @@ import routes from './rglobal';
 Vue.use(Router);
 const vueRouter = new Router({
     routes,
-    // mode: 'history'
-});
-// 验证是否有调度平台权限
-vueRouter.beforeEach((to, from, next) => {
-    // if (!/\/login/.test(to.path) && !store.state.user.userInfo) {
-    //   next('/login');
-    // } else {
-    //   next();
-    // }
-    console.log(to.path, from.path);
-    next();
+    mode: 'history',
 });
 vueRouter.afterEach((to) => {
     const meta = to.meta;

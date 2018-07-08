@@ -234,8 +234,13 @@ a {
   @include formItem(5);
 }
 
-.input-hint{
+.input-error,.input-hint{
   input{
     border-color: $red;
+  }
+}
+.input-success{
+  input{
+    border-color: $success;
   }
 }

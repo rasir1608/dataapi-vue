@@ -4,9 +4,7 @@
     project-main(:is-edite='isEdite',:search='searchInterface',@delete='deleteInterface')
 </template>
 <script>
-import store from '@/store';
 import { mapGetters } from 'vuex';
-import { Message } from 'element-ui';
 import ProjectHeader from '../components/project-header';
 import ProjectMain from '../components/project-main';
 
@@ -50,6 +48,8 @@ export default {
     ...mapGetters([
       'currentProject',
       'interfaceData',
+      'editeDetail',
+      'userInfo',
     ]),
   },
   async created() {
@@ -87,12 +87,23 @@ export default {
     // 加载项目数据
     async loadProjectData() {
       this.isEdite = /edite/.test(this.$route.path);
-      const projectId = this.$route.params.id;
-      await store.dispatch('getProjectById', projectId);
-      if (this.isEdite && this.currentProject.power < 2) {
-        Message.error('您没有编辑该项目的权限');
-        this.$router.push(`/project/detail/${this.currentProject.id}`);
-      }
+      const projectId = Number(this.$route.params.id);
+      await this.$store.dispatch('getProjectById', projectId);
+      if (this.isEdite) {
+        if (this.currentProject.power < 2) {
+          this.$message.error('您没有编辑该项目的权限');
+          this.$router.push(`/project/detail/${this.currentProject.id}`);
+        } else {
+          const kind = 0;
+          await this.$store.dispatch('getEditeDetail', { kind, target: projectId });
+          if (this.editeDetail.islock === 1 && this.editeDetail.editor !== this.userInfo.id) {
+            this.$message.error(`该项目正在被${this.editeDetail.editorName}编辑，您无法编辑！`);
+            this.$router.push(`/project/detail/${this.currentProject.id}`);
+          } else {
+            await this.$store.dispatch('lockEdite', { kind, target: projectId });
+          }
+        }
+      } 
     },
   },
 };

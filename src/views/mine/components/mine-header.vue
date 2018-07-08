@@ -158,10 +158,10 @@ export default {
       this.$message.error(err || '头像上传失败');
     },
     checkPw(tag) {
-      return checkChangePw(this.pwData, false)[tag]() ? '' : 'input-hint';
+      return checkChangePw(this.pwData, false)[tag]() ? 'input-success' : 'input-error';
     },
     checkUserName() {
-      return checkNickName(this.newUserName, false) ? '' : 'input-hint';
+      return checkNickName(this.newUserName, false) ? 'input-success' : 'input-error';
     },
     // 修改昵称
     updateUserName() {

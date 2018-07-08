@@ -6,7 +6,6 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { Message } from 'element-ui';
 import InterfaceHeader from '../components/interface-header';
 import InterfaceMain from '../components/interface-main';
 import InterfaceFooter from '../components/interface-footer';
@@ -33,6 +32,8 @@ export default {
   computed: {
     ...mapGetters([
       'currentInterface',
+      'editeDetail',
+      'userInfo',
     ]),
   },
   created() {
@@ -56,11 +57,23 @@ export default {
     // 加载接口数据
     async loadInterface() {
       this.isEdite = /edite/.test(this.$route.path);
-      const id = this.$route.params.id;
-      await this.$store.dispatch('getInterfaceById', id);
-      if (this.isEdite && this.currentInterface.power < 2) {
-        Message.error('您没有编辑该接口的权限');
-        this.$router.push(`/project/interface/detail/${this.currentInterface.id}`);
+      const interfaceId = Number(this.$route.params.id);
+      await this.$store.dispatch('getInterfaceById', interfaceId);
+      if (this.isEdite) {
+        if (this.currentInterface.power < 2) {
+          this.$message.error('您没有编辑该接口的权限');
+          this.$router.push(`/project/interface/detail/${this.currentInterface.id}`);
+        } else {
+          const kind = 1;
+          await this.$store.dispatch('getEditeDetail', { kind, target: interfaceId });
+          console.log(this.editeDetail);
+          if (this.editeDetail.islock === 1 && this.editeDetail.editor !== this.userInfo.id) {
+            this.$message.error(`该项目正在被${this.editeDetail.editorName}编辑，您无法编辑！`);
+            this.$router.push(`/project/interface/detail/${this.currentInterface.id}`);
+          } else {
+            await this.$store.dispatch('lockEdite', { kind, target: interfaceId });
+          }
+        }
       }
     },
     updateInterface() {

@@ -54,9 +54,14 @@ export default {
       await this.$store.dispatch('getMembers4project', this.currentProject.id);
     },
     async getUserList(query) {
+      if (!query) {
+        this.$store.commit('SET_USER_LIST_4_ADD', []);
+        return;
+      }
       await this.$store.dispatch('getUserList4add', query);
     },
     async addMember() {
+      if (!this.addUserId) return;
       if (this.membersList4project.findIndex(e => e.id === this.addUserId) > -1) {
         this.$message.error('该用户已经在项目中，无需重复添加');
         return;
