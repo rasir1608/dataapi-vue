@@ -2,8 +2,12 @@
   .interface-header
     .interface-info
       .interface-name.form-item-5
-        .label 接口名称：
-        .input {{ interData.name }}
+        .label 
+          span 接口名称：
+          el-button(v-if='isEdite',type='primary',@click='$emit("update")',:loading="interSaveLoading") 保存
+          el-button(v-if='isEdite',type='primary',@click='$emit("unlock")') 解除锁定
+        .input 
+          div {{interData.name}}
       .interface-other
         .interface-items
           .form-item-2
@@ -54,15 +58,21 @@
                 el-option(value='text/xml') text/xml
               div(v-else) {{ interData.contentType || '未填写' }}
       .interface-props-form-submits
-        el-button(v-if='isEdite',@click='$emit("reset")') 重置
-        el-button(v-if='isEdite',type='primary',@click='$emit("update")') 保存
+        el-button(v-if='isEdite',type='primary',@click='$emit("reset")') 重置
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   props: ['isEdite', 'interData'],
   data() {
     return {
     };
+  },
+  computed: {
+    ...mapGetters([
+      'interSaveLoading',
+    ]),
   },
 };
 </script>
@@ -82,6 +92,18 @@ export default {
       padding: 0;
       align-items: initial;
       font-size: $normalFont;
+      .label{
+        display: flex;
+        flex-direction: column;
+        .el-button{
+          padding: 0;
+          margin: 2px 0;
+          line-height: 2;
+          span{
+            line-height: 2;
+          }
+        }
+      }
       .input{
           height: initial;
         }

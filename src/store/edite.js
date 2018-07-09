@@ -10,37 +10,32 @@ const mutations = {
   },
 };
 const actions = {
-  async getEditeDetail({ commit }, data) {
-    const ret = await axios.post('/dataapi/dedite/detail', data, {
+  async lockEdite(store, editeId) {
+    const ret = await axios.get(`/dataapi/dedite/lock/${editeId}`, {
       isLoading: false,
     });
     if (ret.ok) {
-      commit('SET_EDITE_DETAIL', ret.data);
+      Message.success('编辑信息已被您锁定成功');
     } else {
-      commit('SET_EDITE_DETAIL', {});
-      Message.error(ret.msg || '获取编辑信息失败');
-    }
-  },
-  async lockEdite({ commit }, data) {
-    const ret = await axios.post('/dataapi/dedite/lock', data, {
-      isLoading: false,
-    });
-    if (ret.ok) {
-      commit('SET_EDITE_DETAIL', ret.data);
-      Message.success('编辑信息锁定成功');
-    } else {
-      commit('SET_EDITE_DETAIL', {});
       Message.error(ret.msg || '编辑信息锁定失败');
     }
   },
-  async unlockEdite({ commit }, data) {
-    const ret = await axios.post('/dataapi/dedite/unlock', data, {
+  async unlockEdite(store, editeId) {
+    const ret = await axios.get(`/dataapi/dedite/unlock/${editeId}`, {
+      isLoading: false,
+    });
+    if (!ret.ok) {
+      Message.error(ret.msg || '编辑信息解锁失败');
+    }
+  },
+  async createEdite(store, data) {
+    const ret = await axios.post('/dataapi/dedite/create', data, {
       isLoading: false,
     });
     if (ret.ok) {
-      commit('SET_EDITE_DETAIL', {});
+      Message.success('编辑信息已被您锁定成功');
     } else {
-      Message.error(ret.msg || '编辑信息解锁失败');
+      Message.error(ret.msg || '编辑信息锁定失败');
     }
   },
 };

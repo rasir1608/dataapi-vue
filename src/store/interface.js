@@ -9,6 +9,7 @@ const state = {
     total: 0,
   },
   currentInterface: {},
+  interSaveLoading: false,
 };
 const mutations = {
   SET_INTERFACE_DATA(state, interfaceData) {
@@ -16,6 +17,9 @@ const mutations = {
   },
   SET_CURRENT_INTERFACE(state, currentInterface) {
     state.currentInterface = currentInterface;
+  },
+  SET_INTER_SAVE_LOADING(state, interSaveLoading) {
+    state.interSaveLoading = interSaveLoading;
   },
 };
 const actions = {
@@ -61,12 +65,15 @@ const actions = {
       });
       commit('SET_CURRENT_INTERFACE', inter);
     } else {
-      Message.error(ret.msg || '接口删除失败');
+      commit('SET_CURRENT_INTERFACE', {});
+      Message.error(ret.msg || '接口信息获取失败');
     }
   },
   // 修改接口数据
   async updateInterface({ commit }, data) {
-    const ret = await axios.post('/dataapi/dinterface/save', data);
+    commit('SET_INTER_SAVE_LOADING', true);
+    const ret = await axios.post('/dataapi/dinterface/save', data, { isLoading: false });
+    commit('SET_INTER_SAVE_LOADING', false);
     if (ret.ok) {
       Message.success('接口更新成功');
       const inter = {};
@@ -85,6 +92,7 @@ const actions = {
 const getters = {
   interfaceData: state => state.interfaceData,
   currentInterface: state => state.currentInterface,
+  interSaveLoading: state => state.interSaveLoading,
 };
 
 export default{

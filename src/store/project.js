@@ -12,6 +12,7 @@ const state = {
     list: [],
     total: 0,
   },
+  proSaveLoading: false,
 };
 const mutations = {
   SET_MY_PROJECTS(state, myProjects) {
@@ -22,6 +23,9 @@ const mutations = {
   },
   SET_MARKET_PROJECT_LIST(state, marketProjectList) {
     state.marketProjectList = marketProjectList;
+  },
+  SET_PRO_SAVE_LOADING(state, proSaveLoading) {
+    state.proSaveLoading = proSaveLoading;
   },
 };
 const actions = {
@@ -84,9 +88,11 @@ const actions = {
       Message.error(ret.msg || '项目信息获取失败');
     }
   },
-  // 根据ID获取项目信息
+  // 更新项目信息
   async updateProject({ commit }, project) {
-    const ret = await axios.post('/dataapi/dproject/save', project);
+    commit('SET_PRO_SAVE_LOADING', true);
+    const ret = await axios.post('/dataapi/dproject/save', project, { isLoading: false });
+    commit('SET_PRO_SAVE_LOADING', false);
     if (ret.ok) {
       commit('SET_CURRENT_PROJECT', ret.data);
       Message.success('项目保存成功');
@@ -127,6 +133,7 @@ const getters = {
   myProjects: state => state.myProjects,
   currentProject: state => state.currentProject,
   marketProjectList: state => state.marketProjectList,
+  proSaveLoading: state => state.proSaveLoading,
 };
 
 export default{

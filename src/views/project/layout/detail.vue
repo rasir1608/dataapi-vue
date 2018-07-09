@@ -89,19 +89,19 @@ export default {
       this.isEdite = /edite/.test(this.$route.path);
       const projectId = Number(this.$route.params.id);
       await this.$store.dispatch('getProjectById', projectId);
-      if (this.isEdite) {
+      if (this.isEdite && this.currentProject.id) {
         if (this.currentProject.power < 2) {
           this.$message.error('您没有编辑该项目的权限');
           this.$router.push(`/project/detail/${this.currentProject.id}`);
-        } else {
-          const kind = 0;
-          await this.$store.dispatch('getEditeDetail', { kind, target: projectId });
-          if (this.editeDetail.islock === 1 && this.editeDetail.editor !== this.userInfo.id) {
-            this.$message.error(`该项目正在被${this.editeDetail.editorName}编辑，您无法编辑！`);
+        } else if (!/^\d+$/.test(this.currentProject.editeId)) {
+          await this.$store.dispatch('createEdite', { kind: 0, target: projectId });
+          await this.$store.dispatch('getProjectById', projectId);
+        } else if (this.currentProject.islock === 1 && this.currentProject.editor !== this.userInfo.id) {
+            this.$message.error(`该项目正在被${this.currentProject.editorName}编辑，您暂时无法编辑！`);
             this.$router.push(`/project/detail/${this.currentProject.id}`);
-          } else {
-            await this.$store.dispatch('lockEdite', { kind, target: projectId });
-          }
+        } else {
+          await this.$store.dispatch('lockEdite', this.currentProject.editeId);
+          await this.$store.dispatch('getProjectById', projectId);
         }
       } 
     },

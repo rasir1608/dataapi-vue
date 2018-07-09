@@ -2,10 +2,13 @@
   .project-header
     .project-info
       .project-name.form-item-5
-        .label 项目名称：
-        .input 
-          // el-input(v-if='canEdite()',v-model='currentProject.name')
-          div {{currentProject.name}}
+          .label 
+            span 项目名称：
+            el-button(v-if='canEdite()',type='primary',@click='updateProject',:loading="proSaveLoading") 保存
+            el-button(v-if='canEdite()',type='primary',@click='endEdite') 解除锁定
+          .input 
+            // el-input(v-if='canEdite()',v-model='currentProject.name')
+            div {{currentProject.name}}
       .project-other
         .project-items
           .form-item-2
@@ -41,8 +44,6 @@
           .input
             el-input(v-if='canEdite()',v-model='currentProject.remarks' placeholder='请输入项目备注',type='textarea')
             div(v-else) {{currentProject.remarks}}
-        .project-remark-ctrl(v-if='canEdite()')
-          el-button(type='primary',@click='saveRemarks') 保存备注
     .project-interface-search
       .project-interface-ctrol(v-if='canEdite()')
         el-input(v-model='newInterfaceName' placeholder='请输入新接口名称')
@@ -81,6 +82,8 @@ export default {
       newInterfaceName: '',
       modelsShow: false,
       membersShow: false,
+      autoSaveTimeout: 60 * 1000,
+      autoSaveTimer: '',
       modelData: {
         tag: '',
         title: '',
@@ -89,19 +92,47 @@ export default {
       },
     };
   },
+  watch: {
+    isEdite(val) {
+      if (val && this.currentProject.power > 1) {
+        this.beginAutoSaveTimer();
+      } else {
+        if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
+      }
+    },
+  },
   computed: {
     ...mapGetters([
       'currentProject',
       'userInfo',
+      'proSaveLoading',
     ]),
   },
+  created() {
+     this.beginAutoSaveTimer();
+  },
+  destroyed() {
+    if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
+  },
   methods: {
-    saveRemarks() {
+    beginAutoSaveTimer() {
+      if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
+      this.autoSaveTimer = setTimeout(() => {
+        this.updateProject();
+      }, this.autoSaveTimeout);
+    },
+    async updateProject() {
+      if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
       if (this.currentProject.power < 2) {
         this.$message.error('您没有项目修改权限');
         return;
       }
-      this.$store.dispatch('updateProject', this.currentProject);
+      await this.$store.dispatch('updateProject', this.currentProject);
+      this.beginAutoSaveTimer();
+    },
+    async endEdite() {
+      await this.$store.dispatch('unlockEdite', this.currentProject.editeId);
+      this.$router.push(`/project/detail/${this.currentProject.id}`);
     },
     showEditeDialog(tag) {
       if (this.currentProject.power < 2) {
@@ -174,6 +205,18 @@ export default {
       padding: 0;
       align-items: initial;
       font-size: $normalFont;
+      .label{
+        display: flex;
+        flex-direction: column;
+        .el-button{
+          padding: 0;
+          margin: 2px 0;
+          line-height: 2;
+          span{
+            line-height: 2;
+          }
+        }
+      }
       .input{
           height: initial;
         }
