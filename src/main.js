@@ -15,7 +15,6 @@ Vue.config.errorHandler = function (err, vm) {
     // handle error
     console.log('error', err, vm);
 };
-
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.prototype.axios = axios;
@@ -39,3 +38,4 @@ new Vue({
     store,
     render: h => h(App),
 });
+console.log('version:1.0.0');

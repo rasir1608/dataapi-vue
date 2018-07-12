@@ -1,6 +1,6 @@
 <template lang="pug">
   .project-detail
-    project-header(:is-edite='isEdite',:search='searchInterface',@search='resetCurrentPage')
+    project-header(:is-edite='isEdite',:search='searchInterface',@search='resetCurrentPage',@submit='updateProject')
     project-main(:is-edite='isEdite',:search='searchInterface',@delete='deleteInterface')
 </template>
 <script>
@@ -16,6 +16,7 @@ export default {
   data() {
     return {
       isEdite: false,  
+      autoSaveTimeout: 4 * 60 * 1000,
       searchInterface: {
         id: '',
         name: '',
@@ -56,7 +57,12 @@ export default {
     await this.loadProjectData();
     await this.resetCurrentPage();
   },
+  beforeRouteLeave(to, from, next) {
+    if (from.params.autoSaveTimer) clearTimeout(from.params.autoSaveTimer);
+    next();
+  },
   mounted() {
+    
   },
   methods: {
     async getInterfaceList() {
@@ -93,17 +99,40 @@ export default {
         if (this.currentProject.power < 2) {
           this.$message.error('您没有编辑该项目的权限');
           this.$router.push(`/project/detail/${this.currentProject.id}`);
+          return;
         } else if (!/^\d+$/.test(this.currentProject.editeId)) {
           await this.$store.dispatch('createEdite', { kind: 0, target: projectId });
           await this.$store.dispatch('getProjectById', projectId);
         } else if (this.currentProject.islock === 1 && this.currentProject.editor !== this.userInfo.id) {
             this.$message.error(`该项目正在被${this.currentProject.editorName}编辑，您暂时无法编辑！`);
             this.$router.push(`/project/detail/${this.currentProject.id}`);
+            return;
         } else {
           await this.$store.dispatch('lockEdite', this.currentProject.editeId);
           await this.$store.dispatch('getProjectById', projectId);
         }
-      } 
+        this.beginAutoSaveTimer();
+      } else {
+        this.closeTimer();
+      }
+    },
+    closeTimer() {
+      if (this.$route.params.autoSaveTimer) clearTimeout(this.$route.params.autoSaveTimer);
+    },
+    beginAutoSaveTimer() {
+      this.closeTimer();
+      this.$route.params.autoSaveTimer = setTimeout(() => {
+        this.updateProject();
+      }, this.autoSaveTimeout);
+    },
+    async updateProject() {
+      this.closeTimer();
+      if (this.currentProject.power < 2) {
+        this.$message.error('您没有项目修改权限');
+        return;
+      }
+      await this.$store.dispatch('updateProject', this.currentProject);
+      this.beginAutoSaveTimer();
     },
   },
 };

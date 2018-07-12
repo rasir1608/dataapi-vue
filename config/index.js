@@ -15,11 +15,21 @@ module.exports = {
         },
       },
       "/dataapi": {
-        target: `http://localhost:8089`,
+        // target: `http://localhost:8089`,
+        target: `http://10.203.24.65:8090`,
         secure: true, // 不接受 运行在 https 上的服务
         changeOrigin: true,
         pathRewrite: {
           '^/dataapi': '/dataapi'
+        },
+      },
+      "/public": {
+        // target: `http://localhost:8089`,
+        target: `http://10.203.24.65:8090`,
+        secure: true, // 不接受 运行在 https 上的服务
+        changeOrigin: true,
+        pathRewrite: {
+          '^/dataapi': '/public'
         },
       },
     },

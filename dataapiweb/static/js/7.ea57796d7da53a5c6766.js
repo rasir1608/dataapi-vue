@@ -1,2 +1,0 @@
-webpackJsonp([7],{"9NOf":function(e,t){},GVtM:function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var r={render:function(){var e=this.$createElement,t=this._self._c||e;return t("div",{staticClass:"project"},[t("router-view")],1)},staticRenderFns:[]};var s=n("VU/8")(null,r,!1,function(e){n("9NOf")},null,null);t.default=s.exports}});
-//# sourceMappingURL=7.ea57796d7da53a5c6766.js.map

@@ -82,7 +82,6 @@ export default {
       newInterfaceName: '',
       modelsShow: false,
       membersShow: false,
-      autoSaveTimeout: 4 * 60 * 1000,
       modelData: {
         tag: '',
         title: '',
@@ -91,15 +90,6 @@ export default {
       },
     };
   },
-  watch: {
-    isEdite(val) {
-      if (val && this.currentProject.power > 1) {
-        this.beginAutoSaveTimer();
-      } else {
-        this.closeTimer();
-      }
-    },
-  },
   computed: {
     ...mapGetters([
       'currentProject',
@@ -107,34 +97,13 @@ export default {
       'proSaveLoading',
     ]),
   },
-  created() {
-     this.beginAutoSaveTimer();
-  },
-  beforeRouteLeave(to, from, next) {
-    if (from.params.autoSaveTimer) clearTimeout(from.params.autoSaveTimer);
-    next();
-  },
   methods: {
-    closeTimer() {
-      if (this.$route.params.autoSaveTimer) clearTimeout(this.$route.params.autoSaveTimer);
-    },
-    beginAutoSaveTimer() {
-      this.closeTimer();
-      this.$route.params.autoSaveTimer = setTimeout(() => {
-        this.updateProject();
-      }, this.autoSaveTimeout);
-    },
-    async updateProject() {
-      this.closeTimer();
-      if (this.currentProject.power < 2) {
-        this.$message.error('您没有项目修改权限');
-        return;
-      }
-      await this.$store.dispatch('updateProject', this.currentProject);
-      this.beginAutoSaveTimer();
+    updateProject() {
+      this.$emit('submit');
     },
     async endEdite() {
       await this.$store.dispatch('unlockEdite', this.currentProject.editeId);
+      this.updateProject();
       this.$router.push(`/project/detail/${this.currentProject.id}`);
     },
     showEditeDialog(tag) {
