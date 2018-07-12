@@ -46,7 +46,7 @@ const checkChangePw = (pwData, flag) => ({
 
 // 验证昵称
 const checkNickName = (nickName, flag) => {
-  if (/^\w+$/.test(nickName)) {
+  if (!/^\s*$/.test(nickName)) {
     return true;
   } 
   if (flag) Message.error('请重新输入昵称');

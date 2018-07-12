@@ -7,6 +7,8 @@ test/unit/coverage
 test/e2e/reports
 selenium-debug.log
 dist/
+dataapiweb/
+*.zip
 
 # Editor directories and files
 .idea
