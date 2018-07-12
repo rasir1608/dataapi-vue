@@ -13,7 +13,7 @@
         img(:src='userInfo.headerurl || "/static/image/hello_kiity.jpg"')
       .user-info
         span {{userInfo.name || '未登录'}}
-        ul
+        ul(v-if='userInfo.name')
           li(@click='logout') 退出
 </template>
 <script>

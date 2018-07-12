@@ -19,8 +19,7 @@ export default {
   data() {
     return {
       isEdite: false, 
-      autoSaveTimeout: 60 * 1000,
-      autoSaveTimer: '', 
+      autoSaveTimeout: 4 * 60 * 1000,
     };
   },
   watch: {
@@ -41,6 +40,10 @@ export default {
   created() {
     this.loadInterface();
   },
+  beforeRouteLeave(to, from, next) {
+    if (from.params.autoSaveTimer) clearTimeout(from.params.autoSaveTimer);
+    next();
+  },
   methods: {
     async getAction(aciton) {
       const vm = this;
@@ -54,7 +57,7 @@ export default {
             showCancelButton: true,
             async callback(action) {
               if (action === 'confirm') {
-                if (vm.autoSaveTimer) clearTimeout(vm.autoSaveTimer);
+                this.closeTimer();
                 await vm.$store.dispatch('deleteInterface', vm.currentInterface.id);
                 vm.$router.push(`/project/${vm.isEdite ? 'edite' : 'detail'}/${vm.currentInterface.project}`);
               }
@@ -90,20 +93,23 @@ export default {
           await this.$store.dispatch('getInterfaceById', interfaceId);
         }
         this.beginAutoSaveTimer();
-      } else if (this.autoSaveTimer) {
-        clearTimeout(this.autoSaveTimer);
+      } else {
+        this.closeTimer();
       }
     },
     async updateInterface() {
-      if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
+      this.closeTimer();
       await this.$store.dispatch('updateInterface', this.currentInterface);
       this.beginAutoSaveTimer();
     },
     beginAutoSaveTimer() {
-      if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
-      this.autoSaveTimer = setTimeout(() => {
+      this.closeTimer();
+      this.$route.params.autoSaveTimer = setTimeout(() => {
         this.updateInterface();
       }, this.autoSaveTimeout);
+    },
+    closeTimer() {
+      if (this.$route.params.autoSaveTimer) clearTimeout(this.$route.params.autoSaveTimer);
     },
     // 解锁编辑状态
     async unlock() {

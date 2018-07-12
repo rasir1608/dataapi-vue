@@ -82,8 +82,7 @@ export default {
       newInterfaceName: '',
       modelsShow: false,
       membersShow: false,
-      autoSaveTimeout: 60 * 1000,
-      autoSaveTimer: '',
+      autoSaveTimeout: 4 * 60 * 1000,
       modelData: {
         tag: '',
         title: '',
@@ -97,7 +96,7 @@ export default {
       if (val && this.currentProject.power > 1) {
         this.beginAutoSaveTimer();
       } else {
-        if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
+        this.closeTimer();
       }
     },
   },
@@ -111,18 +110,22 @@ export default {
   created() {
      this.beginAutoSaveTimer();
   },
-  destroyed() {
-    if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
+  beforeRouteLeave(to, from, next) {
+    if (from.params.autoSaveTimer) clearTimeout(from.params.autoSaveTimer);
+    next();
   },
   methods: {
+    closeTimer() {
+      if (this.$route.params.autoSaveTimer) clearTimeout(this.$route.params.autoSaveTimer);
+    },
     beginAutoSaveTimer() {
-      if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
-      this.autoSaveTimer = setTimeout(() => {
+      this.closeTimer();
+      this.$route.params.autoSaveTimer = setTimeout(() => {
         this.updateProject();
       }, this.autoSaveTimeout);
     },
     async updateProject() {
-      if (this.autoSaveTimer) clearTimeout(this.autoSaveTimer);
+      this.closeTimer();
       if (this.currentProject.power < 2) {
         this.$message.error('您没有项目修改权限');
         return;
