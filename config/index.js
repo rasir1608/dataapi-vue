@@ -15,8 +15,7 @@ module.exports = {
         },
       },
       "/dataapi": {
-        // target: `http://localhost:8089`,
-        target: `http://10.203.24.65:8090`,
+        target: `http://localhost:8089`,
         secure: true, // 不接受 运行在 https 上的服务
         changeOrigin: true,
         pathRewrite: {
@@ -24,8 +23,7 @@ module.exports = {
         },
       },
       "/public": {
-        // target: `http://localhost:8089`,
-        target: `http://10.203.24.65:8090`,
+        target: `http://localhost:8089`,
         secure: true, // 不接受 运行在 https 上的服务
         changeOrigin: true,
         pathRewrite: {
@@ -66,13 +64,13 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
+    assetsPublicPath: './',
 
     /**
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 

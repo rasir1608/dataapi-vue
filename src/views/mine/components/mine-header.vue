@@ -1,7 +1,7 @@
 <template lang="pug">
   .mine-header
     .mine-info
-      img(:src='userInfo.headerurl || defaultHeader')
+      img(:src='"."+(userInfo.headerurl || defaultHeader)')
       .info-detail
         .info-show
           .form-item-2
@@ -138,7 +138,7 @@ export default {
       if (!/^image\b/.test(fileType)) {
         this.$message.error('请上传图片格式的文件');
         return false;
-      } 
+      }
       this.headerData.fileName = file.name;
       return true;
     },

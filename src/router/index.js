@@ -6,7 +6,7 @@ import routes from './rglobal';
 Vue.use(Router);
 const vueRouter = new Router({
     routes,
-    mode: 'history',
+    mode: 'hash',
 });
 vueRouter.afterEach((to) => {
     const meta = to.meta;

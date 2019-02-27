@@ -3,14 +3,14 @@
     .nav
       .log
         router-link(to='/mine')
-          img(src='/static/image/logo.png')
+          img(src='static/image/logo.png')
           span API市场
       nav
         router-link(to='/mine') 个人主页
         router-link(to='/project') 项目市场
     .login-info
       router-link(to='/mine')
-        img(:src='userInfo.headerurl || "/static/image/hello_kiity.jpg"')
+        img(:src='"."+(userInfo.headerurl || "/static/image/hello_kiity.jpg")')
       .user-info
         span {{userInfo.name || '未登录'}}
         ul(v-if='userInfo.name')
